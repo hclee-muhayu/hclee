@@ -25,6 +25,13 @@
     </properties>
 
     <dependencies>
+        <!-- https://mvnrepository.com/artifact/com.github.jknack/handlebars-springmvc -->
+        <dependency>
+            <groupId>com.github.jknack</groupId>
+            <artifactId>handlebars-springmvc</artifactId>
+            <version>4.0.6</version>
+        </dependency>
+        
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-mustache</artifactId>
@@ -61,6 +68,13 @@
             <artifactId>jquery</artifactId>
             <version>3.1.1-1</version>
         </dependency>
+
+        <dependency>
+            <groupId>com.github.jknack</groupId>
+            <artifactId>handlebars-springmvc</artifactId>
+            <version>LATEST</version>
+        </dependency>
+
     </dependencies>
 
     <build>

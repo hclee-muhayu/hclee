@@ -1,10 +1,10 @@
 package com.muhayu.web;
 
+import com.muhayu.domain.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import javax.servlet.annotation.HandlesTypes;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,7 +20,7 @@ public class WelcomeController {
         model.addAttribute("user", user);
         List<User> userList = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
-            userList.add(new User("user : " + i, "password:" + i, "email:" + i, "name:" + i));
+            userList.add(new User());
         }
         model.addAttribute("userList", userList);
         return "welcome";

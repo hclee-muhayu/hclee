@@ -9,6 +9,16 @@ public class User {
     private String email;
     private String name;
 
+    public User(String userId, String password, String email, String name) {
+        this.userId = userId;
+        this.password = password;
+        this.email = email;
+        this.name = name;
+    }
+
+    public User() {
+    }
+
     public String getUserId() {
         return userId;
     }

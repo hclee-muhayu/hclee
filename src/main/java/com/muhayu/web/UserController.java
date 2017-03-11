@@ -6,9 +6,7 @@ import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,22 +18,42 @@ import java.util.List;
 @Controller
 @RequestMapping("/users")
 public class UserController {
-    final private List<User> users = new ArrayList<>();
-
 
     @Autowired
     private UserRepository repository;
 
-    @PostMapping("")
+    @PostMapping("/create")
     public String create(User user) {
         log.info(user);
         repository.save(user);
         return "redirect:/users";
     }
 
+    @GetMapping("/create")
+    public String create() {
+        return "user/form";
+    }
+
     @GetMapping("")
     public String list(Model model) {
         model.addAttribute("users", repository.findAll());
         return "user/list";
+    }
+
+    @GetMapping("login")
+    public String login() {
+        return "user/login";
+    }
+
+    @GetMapping("/{id}/form")
+    public String updateForm(@PathVariable long id, Model model) {
+        model.addAttribute("user", repository.findOne(id));
+        return "user/updateForm";
+    }
+
+    @PutMapping("/update")
+    public String update(User user, Model model) {
+        repository.save(user);
+        return "redirect:/users";
     }
 }

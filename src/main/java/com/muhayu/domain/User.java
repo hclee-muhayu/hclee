@@ -19,7 +19,7 @@ import javax.persistence.Id;
 public class User {
     @Id
     @GeneratedValue
-    private Long id;
+    private long id;
 
     private String userId;
     private String password;

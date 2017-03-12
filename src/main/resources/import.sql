@@ -1,0 +1,1 @@
+INSERT INTO user (user_ID, Password, Name, Email) VALUES ('hello', '1234', '김동균', 'rainbow0616@naver.com')

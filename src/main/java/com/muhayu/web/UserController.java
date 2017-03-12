@@ -8,8 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import javax.servlet.http.HttpSession;
 
 /**
  * Created by hyecheon on 2017. 3. 7..
@@ -40,9 +39,25 @@ public class UserController {
         return "user/list";
     }
 
-    @GetMapping("login")
+    @GetMapping("/login")
     public String login() {
         return "user/login";
+    }
+
+    @PostMapping("login")
+    public String login(String userId, String password, HttpSession session) {
+        User user = repository.findByUserId(userId);
+        if (user == null) {
+            log.info("Login Failure");
+            return "redirect:/users/login";
+        }
+        if (!password.equals(user.getPassword())) {
+            log.info("Login Failure");
+            return "redirect:/users/login";
+        }
+        log.info("Login success");
+        session.setAttribute("user", user);
+        return "redirect:/";
     }
 
     @GetMapping("/{id}/form")

@@ -6,7 +6,9 @@ import com.muhayu.domain.User;
 import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -38,9 +40,14 @@ public class QuestionController {
         }
         final User userFromSession = HttpSessionUtil.getUserFromSession(session);
         assert userFromSession != null;
-        final Question question = new Question(userFromSession.getUserId(), title, contents);
-        log.info(question);
-        repository.save(question);
+        repository.save(new Question(userFromSession.getUserId(), title, contents));
         return "redirect:/";
+    }
+
+    @GetMapping("{id}/show")
+    public String show(@PathVariable long id, Model model) {
+        log.info("show");
+        model.addAttribute("question", repository.findOne(id));
+        return "/qna/show";
     }
 }

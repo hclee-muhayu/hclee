@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Created by hyecheon on 2017. 3. 12..
@@ -23,9 +25,24 @@ public class Question {
     private String title;
     private String contents;
 
+    private LocalDateTime createDate;
+
     public Question(User writer, String title, String contents) {
         this.writer = writer;
         this.title = title;
         this.contents = contents;
+        this.createDate = LocalDateTime.now();
+    }
+
+    public String getFormattedCreateDate() {
+        if (createDate == null) {
+            return "";
+        }
+        return createDate.format(DateTimeFormatter.ofPattern("yyyy . MM . dd HH:ss"));
+    }
+
+    public void update(Question question) {
+        this.title = question.getTitle();
+        this.contents = question.getContents();
     }
 }

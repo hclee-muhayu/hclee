@@ -52,6 +52,7 @@ public class UserController {
 
     @PostMapping("login")
     public String login(String userId, String password, HttpSession session) {
+        log.info(userId);
         User user = repository.findByUserId(userId);
         if (user == null) {
             log.info("Login Failure > user is null");

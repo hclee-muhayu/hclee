@@ -40,7 +40,7 @@ public class QuestionController {
         }
         final User userFromSession = HttpSessionUtil.getUserFromSession(session);
         assert userFromSession != null;
-        repository.save(new Question(userFromSession.getUserId(), title, contents));
+        repository.save(new Question(userFromSession, title, contents));
         return "redirect:/";
     }
 

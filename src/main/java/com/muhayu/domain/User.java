@@ -2,6 +2,7 @@ package com.muhayu.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
@@ -12,6 +13,7 @@ import javax.persistence.Id;
  * Created by hyecheon on 2017. 3. 7..
  */
 
+@EqualsAndHashCode
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

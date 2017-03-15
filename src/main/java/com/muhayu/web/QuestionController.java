@@ -1,5 +1,6 @@
 package com.muhayu.web;
 
+import com.muhayu.HttpSessionUtil;
 import com.muhayu.domain.Question;
 import com.muhayu.domain.QuestionRepository;
 import com.muhayu.domain.User;
@@ -43,32 +44,52 @@ public class QuestionController {
 
     @GetMapping("/{id}")
     public String show(@PathVariable final long id, final Model model) {
-        log.info("show");
         final Question one = questionRepository.findOne(id);
-        System.out.println(one.getWriter());
         model.addAttribute("question", one);
         return "/qna/show";
 
     }
 
     @GetMapping("/{id}/form")
-    public String updateForm(@PathVariable final Long id, Model model) {
-        log.info("updateForm");
-        model.addAttribute("question", questionRepository.findOne(id));
+    public String updateForm(@PathVariable final Long id, Model model, HttpSession session) {
+        if (!HttpSessionUtil.isLoginUser(session)) {
+            return "/users/login";
+        }
+        User loginUser = HttpSessionUtil.getUserFromSession(session);
+        final Question question = questionRepository.findOne(id);
+        if (!question.isSameWriter(loginUser)) {
+            return "/users/login";
+        }
+        model.addAttribute("question", question);
         return "/qna/updateForm";
     }
 
     @PutMapping(value = "/{id}")
-    public String update(@PathVariable final Long id, Question question) {
-        final Question updateQuestion = questionRepository.findOne(id);
-        updateQuestion.update(question);
-        questionRepository.save(updateQuestion);
+    public String update(@PathVariable final Long id, Question updateQuestion, HttpSession session) {
+        if (!HttpSessionUtil.isLoginUser(session)) {
+            return "/users/login";
+        }
+        User loginUser = HttpSessionUtil.getUserFromSession(session);
+        final Question question = questionRepository.findOne(id);
+        if (!question.isSameWriter(loginUser)) {
+            return "/users/login";
+        }
+        final Question storedQuestion = questionRepository.findOne(id);
+        storedQuestion.update(updateQuestion);
+        questionRepository.save(storedQuestion);
         return String.format("redirect:/questions/%d", id);
     }
 
     @DeleteMapping(value = "/{id}")
-    public String delete(@PathVariable Long id) {
-        log.info("delete");
+    public String delete(@PathVariable Long id, HttpSession session) {
+        if (!HttpSessionUtil.isLoginUser(session)) {
+            return "/users/login";
+        }
+        User loginUser = HttpSessionUtil.getUserFromSession(session);
+        final Question question = questionRepository.findOne(id);
+        if (!question.isSameWriter(loginUser)) {
+            return "/users/login";
+        }
         questionRepository.delete(id);
         return "redirect:/";
     }

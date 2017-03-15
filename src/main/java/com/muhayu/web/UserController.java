@@ -1,5 +1,6 @@
 package com.muhayu.web;
 
+import com.muhayu.HttpSessionUtil;
 import com.muhayu.domain.User;
 import com.muhayu.domain.UserRepository;
 import lombok.extern.log4j.Log4j;

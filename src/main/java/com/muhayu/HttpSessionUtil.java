@@ -1,4 +1,4 @@
-package com.muhayu.web;
+package com.muhayu;
 
 import com.muhayu.domain.User;
 

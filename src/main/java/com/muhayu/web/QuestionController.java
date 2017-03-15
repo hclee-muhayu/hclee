@@ -52,14 +52,28 @@ public class QuestionController {
     }
 
     @GetMapping("/{id}/form")
-    public String updateForm(@PathVariable final Long id, Model model) {
-        log.info("updateForm");
-        model.addAttribute("question", questionRepository.findOne(id));
+    public String updateForm(@PathVariable final Long id, Model model, HttpSession session) {
+        if (!HttpSessionUtil.isLoginUser(session)) {
+            return "/users/loginForm";
+        }
+        final User loginUser = HttpSessionUtil.getUserFromSession(session);
+        final Question question = questionRepository.findOne(id);
+        if (question.isSameWriter(loginUser)) {
+            return "/users/loginForm";
+        }
+        model.addAttribute("question", question);
         return "/qna/updateForm";
     }
 
     @PutMapping(value = "/{id}")
-    public String update(@PathVariable final Long id, Question question) {
+    public String update(@PathVariable final Long id, Question question, HttpSession session) {
+        if (!HttpSessionUtil.isLoginUser(session)) {
+            return "/users/loginForm";
+        }
+        final User loginUser = HttpSessionUtil.getUserFromSession(session);
+        if (question.isSameWriter(loginUser)) {
+            return "/users/loginForm";
+        }
         final Question updateQuestion = questionRepository.findOne(id);
         updateQuestion.update(question);
         questionRepository.save(updateQuestion);
@@ -67,8 +81,15 @@ public class QuestionController {
     }
 
     @DeleteMapping(value = "/{id}")
-    public String delete(@PathVariable Long id) {
-        log.info("delete");
+    public String delete(@PathVariable Long id, HttpSession session) {
+        if (!HttpSessionUtil.isLoginUser(session)) {
+            return "/users/loginForm";
+        }
+        final User loginUser = HttpSessionUtil.getUserFromSession(session);
+        final Question question = questionRepository.findOne(id);
+        if (question.isSameWriter(loginUser)) {
+            return "/users/loginForm";
+        }
         questionRepository.delete(id);
         return "redirect:/";
     }

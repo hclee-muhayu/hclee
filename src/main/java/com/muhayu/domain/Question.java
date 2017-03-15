@@ -45,4 +45,8 @@ public class Question {
         this.title = question.getTitle();
         this.contents = question.getContents();
     }
+
+    public boolean isSameWriter(User loginUser) {
+        return this.writer.equals(loginUser);
+    }
 }

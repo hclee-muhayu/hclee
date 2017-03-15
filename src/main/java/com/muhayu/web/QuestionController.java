@@ -1,6 +1,5 @@
 package com.muhayu.web;
 
-import com.muhayu.HttpSessionUtil;
 import com.muhayu.domain.Question;
 import com.muhayu.domain.QuestionRepository;
 import com.muhayu.domain.User;
@@ -44,7 +43,9 @@ public class QuestionController {
 
     @GetMapping("/{id}")
     public String show(@PathVariable final long id, final Model model) {
+        log.info("show");
         final Question one = questionRepository.findOne(id);
+        System.out.println(one.getWriter());
         model.addAttribute("question", one);
         return "/qna/show";
 
